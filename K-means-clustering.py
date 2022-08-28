@@ -40,18 +40,31 @@ def promedio(datos):
 		prom[i,0] = suma/datos.shape[0]
 	return prom
 
-def K-means_clustering(datos,K,aleatorio = True,centros = None):
+def K_means_clustering(datos,K,aleatorio = True,centros = None):
 	'''
 	Algoritmo para clasificar un conjunto de puntos en el espacio
 
 	Argumentos:
-		datos: conjunto de puntos en el espacio
-		K: numero de centroides
-		aleatorio: True si los centroides seran puntos aleatorios del conjunto, False si se introduciran manualmente
-		centros: centroides iniciales si aleatorio == False
+		datos: conjunto de puntos en el espacio, arreglo de numpy
+		K: numero de centroides, entero
+		aleatorio: True si los centroides seran puntos aleatorios del conjunto, False si se introduciran manualmente, booleano
+		centros: centroides iniciales si aleatorio == False, arreglo de numpy
 	
 	Returns:
 
 	'''
 
-	pass
+	if aleatorio:
+		indices = np.random.choice(datos.shape[0],size = K,replace = False)
+		indices = np.sort(indices)
+		centros = np.zeros([K,datos.shape[1]])
+		j = 0
+		for i in indices:
+			centros[j] = datos[i]
+			j += 1
+	elif centros == None:
+		raise Exception("Es necesario introducir los centros si se desactiva la opcion aleatoria")
+
+if __name__ = '__main__':
+	datos = np.array([[1,2,3],[4,5,6],[7,8,9]])
+	K_means_clustering(datos,2)
