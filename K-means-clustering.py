@@ -40,5 +40,18 @@ def promedio(datos):
 		prom[i,0] = suma/datos.shape[0]
 	return prom
 
-datos = np.array([[1,4,7],[2,5,8],[3,6,9]])
-print(promedio(datos))
+def K-means_clustering(datos,K,aleatorio = True,centros = None):
+	'''
+	Algoritmo para clasificar un conjunto de puntos en el espacio
+
+	Argumentos:
+		datos: conjunto de puntos en el espacio
+		K: numero de centroides
+		aleatorio: True si los centroides seran puntos aleatorios del conjunto, False si se introduciran manualmente
+		centros: centroides iniciales si aleatorio == False
+	
+	Returns:
+
+	'''
+
+	pass
