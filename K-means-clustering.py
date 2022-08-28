@@ -22,7 +22,7 @@ def distancia(a,b):
 
 def promedio(datos):
 	'''
-	Calcula el valor promedio de los datos
+	Calcula el valor promedio de los datos acomodados como columnas cada vector diferente
 
 	Argumentos:
 		datos: matriz con los datos a promediar
@@ -31,4 +31,14 @@ def promedio(datos):
 		prom: vector con el promedio de los datos
 	'''
 
-	pass
+	prom = np.zeros([len(datos),1])
+	for i in range(datos.shape[0]):
+		suma = 0
+		for j in range(datos.shape[1]):
+			suma += datos[i,j]
+			print(suma)
+		prom[i,0] = suma/datos.shape[0]
+	return prom
+
+datos = np.array([[1,4,7],[2,5,8],[3,6,9]])
+print(promedio(datos))
