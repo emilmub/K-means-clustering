@@ -19,3 +19,16 @@ def distancia(a,b):
 	dist = np.sqrt(dist)
 
 	return dist
+
+def promedio(datos):
+	'''
+	Calcula el valor promedio de los datos
+
+	Argumentos:
+		datos: matriz con los datos a promediar
+
+	Returns:
+		prom: vector con el promedio de los datos
+	'''
+
+	pass
