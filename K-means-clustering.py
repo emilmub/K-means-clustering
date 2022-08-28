@@ -31,14 +31,12 @@ def promedio(datos):
 		prom: vector con el promedio de los datos
 	'''
 
-	prom = np.zeros(len(datos))
+	prom = np.zeros(datos.shape[1])
 	for i in range(datos.shape[1]):
 		suma = 0
 		for j in range(datos.shape[0]):
 			suma += datos[j,i]
-		prom[i] = suma/datos.shape[1]
-	return prom
-
+		prom[i] = suma/datos.shape[0]
 	return prom
 
 def clasif_centros(datos,dimensiones,centros,K):
@@ -104,10 +102,7 @@ def K_means_clustering(datos,K,aleatorio = True,centros = None,Niter = 10000):
 	ind_centros = clasif_centros(datos,dimensiones,centros,K) # Asignar a cada punto un centroide
 	for iter in range(Niter):
 		for i in range(K):
-			print(dimensiones[0],ind_centros.shape[0])
-			print(ind_centros == i)
-			datosaprom = datos[ind_centros == i,:]
-			centros[i,:] = promedio(datosaprom) # Cambia el centroide al promedio de los puntos asignados a dicho centroide
+			centros[i,:] = promedio(datos[ind_centros == i,:]) # Cambia el centroide al promedio de los puntos asignados a dicho centroide
 
 		ind_copia = ind_centros.copy() # Hace una copia de la clasificacion con los centros anteriores
 		ind_centros = clasif_centros(datos,dimensiones,centros,K) # Asignar a cada punto un nuevo centroide
@@ -118,13 +113,17 @@ def K_means_clustering(datos,K,aleatorio = True,centros = None,Niter = 10000):
 	return ind_centros, centros
 
 if __name__ == '__main__':
-	datos = np.array([[1,2],[3,4],[5,6],[7,8],[9,10]])
+	'''
+	Prueba del algoritmo con una base de datos de 10000 puntos aleatorios en dos dimensiones
+	'''
+	#datos = np.array([[1,2],[3,4],[5,6],[7,8],[9,10]])
+	datos = np.random.rand(10000,2)
 	cent = np.array([[0,0],[10,10]])
-	K = 2
+	K = 5
 	clasif, centros = K_means_clustering(datos,K)
 
-	colores = ['b','k','m','r']
+	colores = ['b','k','m','r','g']
 	for k in range(K):
-		plt.plot(datos[clasif == k],ls='',marker = '.',c = colores[k])
-		plt.plot(centros[k],ls='',marker = '*',c = colores[k])
+		plt.plot(datos[clasif == k,0],datos[clasif == k,1],ls='',marker = '.',c = colores[k])
+		plt.plot(centros[k,0],centros[k,1],ls='',marker = '*',c = 'y')
 	plt.show()
