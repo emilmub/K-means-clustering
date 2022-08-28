@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def distancia(a,b):
 	'''
@@ -53,7 +54,7 @@ def clasif_centros(datos,dimensiones,centros,K):
 		ind_centros: clasificacion con cada centroide
 	'''
 
-	ind_centros = np.zeros([dimensiones[0],1])
+	ind_centros = np.zeros(dimensiones[0])
 
 	for i in range(dimensiones[0]):
 		min_dist = np.inf
@@ -67,7 +68,7 @@ def clasif_centros(datos,dimensiones,centros,K):
 
 	return ind_centros
 
-def K_means_clustering(datos,K,aleatorio = True,centros = None):
+def K_means_clustering(datos,K,aleatorio = True,centros = None,Niter = 10000):
 	'''
 	Algoritmo para clasificar un conjunto de puntos en el espacio
 
@@ -76,6 +77,7 @@ def K_means_clustering(datos,K,aleatorio = True,centros = None):
 		K: numero de centroides, entero
 		aleatorio: True si los centroides seran puntos aleatorios del conjunto, False si se introduciran manualmente, booleano
 		centros: centroides iniciales si aleatorio == False, arreglo de numpy
+		Niter: Maximo numero de iteraciones permitidas
 	
 	Returns:
 
@@ -98,10 +100,30 @@ def K_means_clustering(datos,K,aleatorio = True,centros = None):
 	elif centros.shape[1] != dimensiones[1]:
 		raise Exception('Es necesario que los centros tengan las mismas dimensiones que los puntos dados')
 
-	ind_centros = clasif_centros(datos,dimensiones,centros,K)
-	print(ind_centros)
+	ind_centros = clasif_centros(datos,dimensiones,centros,K) # Asignar a cada punto un centroide
+	for iter in range(Niter):
+		for i in range(K):
+			print(dimensiones[0],ind_centros.shape[0])
+			print(ind_centros == i)
+			datosaprom = datos[ind_centros == i,:]
+			centros[i,:] = promedio(datosaprom) # Cambia el centroide al promedio de los puntos asignados a dicho centroide
+
+		ind_copia = ind_centros.copy() # Hace una copia de la clasificacion con los centros anteriores
+		ind_centros = clasif_centros(datos,dimensiones,centros,K) # Asignar a cada punto un nuevo centroide
+
+		if distancia(ind_copia,ind_centros) == 0:
+			break
+
+	return ind_centros, centros
 
 if __name__ == '__main__':
-	datos = np.array([[1,2,3],[4,5,6],[7,8,9]])
-	cent = np.array([[0,0,0],[1,1,1]])
-	K_means_clustering(datos,3)
+	datos = np.array([[1,2],[3,4],[5,6],[7,8],[9,10]])
+	cent = np.array([[0,0],[10,10]])
+	K = 2
+	clasif, centros = K_means_clustering(datos,K)
+
+	colores = ['b','k','m','r']
+	for k in range(K):
+		plt.plot(datos[clasif == k],ls='',marker = '.',c = colores[k])
+		plt.plot(centros[k],ls='',marker = '*',c = colores[k])
+	plt.show()
